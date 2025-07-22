@@ -25,7 +25,7 @@ public class UserController {
 
 
     @GetMapping("/users/{id}")
-     public User retrieveUser(@PathVariable Integer id) {
+     public User retrieveUser(@PathVariable int id) {
         User user = service.findOne(id);
         if(user == null){
             throw new UserNotFoundException(String.format("ID[%s] not found", id));
@@ -45,6 +45,16 @@ public class UserController {
                 .toUri();
 
         return ResponseEntity.created(location).body(savedUser);
+    }
+
+    @DeleteMapping("/users/{id}")
+    public ResponseEntity<User> deleteUser(@PathVariable int id) {
+        User deletedUser = service.deleteById(id);
+
+        if(deletedUser == null){
+            throw new UserNotFoundException(String.format("ID[%s] not found", id));
+        }
+        return ResponseEntity.noContent().build();
     }
 
 
